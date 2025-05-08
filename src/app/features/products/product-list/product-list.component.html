@@ -1,0 +1,145 @@
+<!-- <div class="product-list-container">
+    <div class="filter-section">
+      <h2>Filter Products</h2>
+      
+      <div class="filter-group">
+        <label>Search:</label>
+        <input type="text" formControlName="search" placeholder="Search products...">
+      </div>
+      
+      <div class="filter-group">
+        <label>Category:</label>
+        <select formControlName="category">
+          <option value="">All Categories</option>
+          @for (category of categories; track category.id) {
+            <option [value]="category.id">{{ category.name }}</option>
+          }
+        </select>
+      </div>
+      
+      <div class="filter-group">
+        <label>Price Range:</label>
+        <div class="price-range">
+          <input type="number" formControlName="priceMin" placeholder="Min price">
+          <span>to</span>
+          <input type="number" formControlName="priceMax" placeholder="Max price">
+        </div>
+      </div>
+      
+      <button class="reset-btn" (click)="resetFilters()">Reset Filters</button>
+    </div>
+  
+    <div class="sort-controls">
+      <div class="sort-group">
+        <label>Sort by:</label>
+        <select (change)="onSortChange($event, 'price')">
+          <option value="">Price</option>
+          <option value="asc">Price: Low to High</option>
+          <option value="desc">Price: High to Low</option>
+        </select>
+        
+        <select (change)="onSortChange($event, 'name')">
+          <option value="">Name</option>
+          <option value="asc">Name: A-Z</option>
+          <option value="desc">Name: Z-A</option>
+        </select>
+      </div>
+    </div>
+  
+    @if (isLoading) {
+      <div class="loading-spinner">
+        Loading products...
+      </div>
+    } @else {
+      <div class="products-grid">
+        @for (product of filteredProducts; track product.id) {
+          <div class="product-card">
+            <img [src]="product.images[0] || 'assets/default-product.png'" [alt]="product.title">
+            <h3>{{ product.title }}</h3>
+            <p class="price">{{ product.price | currency }}</p>
+            <p class="category">{{ product.category.name }}</p>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        } @empty {
+          <div class="no-results">
+            No products match your filters. Try adjusting your search criteria.
+          </div>
+        }
+      </div>
+    }
+  </div> -->
+
+
+
+  <div class="product-list-container">
+    <div class="filter-section">
+      <h2>Filter Products</h2>
+  
+      <!-- Form to wrap the filter controls -->
+      <form [formGroup]="filterForm" (ngSubmit)="applyFilters()">
+        <div class="filter-group">
+          <label>Search:</label>
+          <input type="text" formControlName="search" placeholder="Search products...">
+        </div>
+  
+        <div class="filter-group">
+          <label>Category:</label>
+          <select formControlName="category">
+            <option value="">All Categories</option>
+            <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+          </select>
+        </div>
+  
+        <div class="filter-group">
+          <label>Price Range:</label>
+          <div class="price-range">
+            <input type="number" formControlName="priceMin" placeholder="Min price">
+            <span>to</span>
+            <input type="number" formControlName="priceMax" placeholder="Max price">
+          </div>
+        </div>
+  
+        <button type="submit" class="reset-btn" [disabled]="filterForm.invalid">Apply Filters</button>
+        <button type="button" class="reset-btn resetbtn" (click)="resetFilters()">Reset Filters</button>
+      </form>
+    </div>
+  
+    <div class="sort-controls">
+      <div class="sort-group">
+        <label>Sort by:</label>
+        <select (change)="onSortChange($event, 'price')">
+          <option value="">Price</option>
+          <option value="asc">Price: Low to High</option>
+          <option value="desc">Price: High to Low</option>
+        </select>
+  
+        <select (change)="onSortChange($event, 'name')">
+          <option value="">Name</option>
+          <option value="asc">Name: A-Z</option>
+          <option value="desc">Name: Z-A</option>
+        </select>
+      </div>
+    </div>
+  
+    <div *ngIf="isLoading">
+      <div class="loading-spinner">
+        Loading products...
+      </div>
+    </div>
+    <div *ngIf="!isLoading">
+      <div class="products-grid">
+        <div *ngFor="let product of filteredProducts" class="product-card">
+          <img [src]="product.images[0] || 'assets/default-product.png'" [alt]="product.title">
+          <h3>{{ product.title }}</h3>
+          <p class="price">{{ product.price | currency }}</p>
+          <p class="category">{{ product.category.name }}</p>
+          <button class="add-to-cart">Add to Cart</button>
+        </div>
+  
+        <div *ngIf="filteredProducts.length === 0" class="no-results">
+          No products match your filters. Try adjusting your search criteria.
+        </div>
+      </div>
+    </div>
+  </div>
+  

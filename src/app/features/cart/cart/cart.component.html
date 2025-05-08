@@ -1,0 +1,33 @@
+<div class="cart-container" *ngIf="cartItems.length > 0; else emptyCart">
+    <form [formGroup]="cartForm" (ngSubmit)="updateCart()">
+      <div formArrayName="items" class="cart-items">
+        <div *ngFor="let item of cartItems; let i = index" [formGroupName]="i" class="cart-item">
+          <img [src]="item.product.images[0]" alt="{{ item.product.title }}" class="product-image">
+          <div class="product-info">
+            <h3>{{ item.product.title }}</h3>
+            <p>{{ item.product.price | currency }}</p>
+            <p *ngIf="item.selectedVariants?.length">
+              <strong>Variants:</strong>
+              <span *ngFor="let variant of item.selectedVariants">
+                {{ variant.type }}: {{ variant.value }}&nbsp;
+              </span>
+            </p>
+            <label>Quantity:
+              <input type="number" formControlName="quantity" min="1">
+            </label>
+            <button type="button" (click)="removeItem(i)" class="remove-btn">Remove</button>
+          </div>
+        </div>
+      </div>
+  
+      <div class="cart-summary">
+        <p><strong>Total:</strong> {{ total | currency }}</p>
+        <button type="submit" class="update-btn">Update Cart</button>
+      </div>
+    </form>
+  </div>
+  
+  <ng-template #emptyCart>
+    <p>Your cart is empty.</p>
+  </ng-template>
+  
