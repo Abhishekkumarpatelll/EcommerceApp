@@ -7,19 +7,18 @@ export class CartService {
   private cartItems = new BehaviorSubject<CartItem[]>([]);
   cartItems$ = this.cartItems.asObservable();
 
-  addToCart(item: CartItem): void {
+  addToCart(cartItem: CartItem): void {
     const currentItems = this.cartItems.value;
-    const existingItem = currentItems.find(i => i.product.id === item.product.id);
-  
+    const existingItem = currentItems.find(i => i.product.id === cartItem.product.id);
+
     if (existingItem) {
-      existingItem.quantity += item.quantity;
+      existingItem.quantity += cartItem.quantity;
     } else {
-      currentItems.push(item);
+      currentItems.push(cartItem);
     }
-  
+
     this.cartItems.next([...currentItems]);
   }
-  
 
   removeFromCart(productId: number): void {
     const updatedItems = this.cartItems.value.filter(
@@ -39,6 +38,4 @@ export class CartService {
   setCartItems(items: CartItem[]): void {
     this.cartItems.next([...items]);
   }
-  
-  
 }

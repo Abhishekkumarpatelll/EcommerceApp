@@ -45,7 +45,7 @@ export class ProductDetailComponent implements OnInit {
   initForm() {
     this.productForm = this.fb.group({
       quantity: [1, [Validators.required, Validators.min(1)]],
-      variants: this.fb.array([])
+      variants: this.fb.array([]) 
     });
 
     if (this.product.variants) {
@@ -66,7 +66,6 @@ export class ProductDetailComponent implements OnInit {
     return this.productForm.get('variants') as FormArray;
   }
 
-  // Update the onVariantChange method
   onVariantChange(type: string, event: Event) {
     const selectElement = event.target as HTMLSelectElement;
     this.selectedVariantValues[type] = selectElement.value;
@@ -90,7 +89,6 @@ export class ProductDetailComponent implements OnInit {
         quantity: this.productForm.value.quantity,
         selectedVariants: selectedVariants.length > 0 ? selectedVariants : undefined
       });
-      
     }
   }
 
